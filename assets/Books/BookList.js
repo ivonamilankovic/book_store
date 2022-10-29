@@ -4,7 +4,10 @@ const BookList = ({ books }) => {
   return (
     <>
       {books.map((book, index) => {
-        const { id, name, author, description, price, released_year } = book;
+        const  data  = book['data'];
+        const  genreName  = book['genreName'];
+        const {  name, author, description, price, releasedYear, image , pageNumber } = data;
+
         return (
           <div key={index} className="card w-75 mx-auto p-4 my-2">
             <div className="d-flex justify-content-between mt-2">
@@ -16,12 +19,23 @@ const BookList = ({ books }) => {
               </div>
             </div>
             <hr />
-            <h5>Author: {author}</h5>
-            <p className="mx-5">{description} </p>
+            <div className="d-flex">
+              <div className="col-md-4 ps-5">
+              <img src="https://api.lorem.space/image/book?w=150&h=220" alt="picture of book" />
+            </div>
+              <div className="col-md-8">
+            <p className="fw-semibold">
+              Author:<i> {author}</i>
+              <br/>
+              Genre:<i> {genreName}</i>
+            </p>
+            <p className="mx-5">{description}</p>
+            </div>
+            </div>
             <hr />
             <div className="text-end">
               <small className="d-block text-muted">
-                Published:{released_year}
+                Published: year {releasedYear}.
               </small>
             </div>
           </div>

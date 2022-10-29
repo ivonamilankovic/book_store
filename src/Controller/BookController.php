@@ -14,9 +14,9 @@ class BookController extends \Symfony\Bundle\FrameworkBundle\Controller\Abstract
      */
     public function books(BookRepository $bookRepository):JsonResponse
     {
-        $books = $bookRepository->findAll();
+        $books = $bookRepository->findByStoredAmountMoreThanZero();
         $serializer = $this->container->get('serializer');
-        $jsonData = $serializer->serialize($books,'json');
+        $jsonData = $serializer->serialize($books,'json', ['groups' => ['book_details']]);
         return new JsonResponse($jsonData);
     }
     /**

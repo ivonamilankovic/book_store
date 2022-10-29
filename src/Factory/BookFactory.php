@@ -13,17 +13,20 @@ final class BookFactory extends ModelFactory
     public function __construct()
     {
         parent::__construct();
-
     }
 
     protected function getDefaults(): array
     {
         return [
-            'author' => self::faker()->text(),
+            'author' => self::faker()->name(),
             'price' => self::faker()->randomNumber(2, true),
-            'releasedYear' => self::faker()->randomNumber(4, true),
-            'name' => self::faker()->text(),
+            'releasedYear' => self::faker()->year(),
+            'name' => self::faker()->text(25),
             'description' => self::faker()->text(),
+            'image' => self::faker()->image(),
+            'storedAmount' => self::faker()->numberBetween(0,100),
+            'pageNumber' => self::faker()->numberBetween(100,1000),
+            'genre' =>BookGenreFactory::random()
         ];
     }
 
