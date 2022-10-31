@@ -50,7 +50,7 @@ class BookRepository extends ServiceEntityRepository
     public function findByStoredAmountMoreThanZero()
     {
         return $this->createQueryBuilder('b')
-            ->select('b as data')
+            ->select('b as books')
             ->addSelect('g.genreName')
             ->leftJoin(BookGenre::class, 'g', Join::WITH, 'g.id = b.genre')
             ->andWhere('b.storedAmount > 0')
@@ -58,6 +58,19 @@ class BookRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+    public function findOneBook(int $id)
+    {
+        return $this->createQueryBuilder('b')
+            ->select('b as book')
+            ->addSelect('g.genreName')
+            ->leftJoin(BookGenre::class, 'g', Join::WITH, 'g.id = b.genre')
+            ->andWhere('b.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
 
     /*
     public function findOneBySomeField($value): ?Book

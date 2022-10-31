@@ -22,8 +22,8 @@ final class BookFactory extends ModelFactory
             'price' => self::faker()->randomNumber(2, true),
             'releasedYear' => self::faker()->year(),
             'name' => self::faker()->text(25),
-            'description' => self::faker()->text(),
-            'image' => self::faker()->image(),
+            'description' => self::faker()->paragraph(20),
+            'image' => "https://api.lorem.space/image/book?w=150&h=220",
             'storedAmount' => self::faker()->numberBetween(0,100),
             'pageNumber' => self::faker()->numberBetween(100,1000),
             'genre' =>BookGenreFactory::random()

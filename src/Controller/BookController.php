@@ -19,6 +19,18 @@ class BookController extends \Symfony\Bundle\FrameworkBundle\Controller\Abstract
         $jsonData = $serializer->serialize($books,'json', ['groups' => ['book_details']]);
         return new JsonResponse($jsonData);
     }
+
+    /**
+     * @Route("/books/{id}", name="app_book_by_id", options={"expose" = true})
+     */
+    public function bookById(BookRepository $bookRepository, int $id):JsonResponse
+    {
+        $books = $bookRepository->findOneBook($id);
+        $serializer = $this->container->get('serializer');
+        $jsonData = $serializer->serialize($books,'json', ['groups' => ['book_details']]);
+        return new JsonResponse($jsonData);
+    }
+
     /**
      * @Route("/bookList", name="app_book_list")
      */
@@ -26,5 +38,6 @@ class BookController extends \Symfony\Bundle\FrameworkBundle\Controller\Abstract
     {
         return $this->render('/books/all_books.html.twig');
     }
+
 
 }
