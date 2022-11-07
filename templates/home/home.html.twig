@@ -5,15 +5,16 @@
 {% block body %}
 
     <div>
-        <div style="background-image: linear-gradient(to bottom, rgba(55,49,53,0.75), rgba(55,49,53,0.4)), url({{ asset('/build/images/book-bg.jpg') }}); height: 90vh;">
+        <div style="background-image: linear-gradient(to bottom, rgba(55,49,53,0.75), rgba(55,49,53,0.4)), url({{ asset('/build/images/book-bg.jpg') }});background-repeat: no-repeat; background-size: cover; height: 90vh;">
     {% if app.user %}
-        <h2>Hi {{ app.user.name }}</h2>
+        <h2 class="text-white">Hi {{ app.user.name }}</h2>
+        {# TODO #}
     {% else %}
         <h2 class="py-5 text-center text-white fst-italic">Welcome to MyBooks</h2>
         <div class="d-flex justify-content-evenly w-75 mx-auto">
             <div class="card text-bg-dark" style="width: 250px; ">
                 <p class="p-4" style="height: 150px;"><span class="text-center">You are new on MyBooks? Join to our community.</span></p>
-                <a href="#" class="card-footer text-decoration-none bg-light text-dark">Sign up</a>
+                <a href="{{ path('app_register') }}" class="card-footer text-decoration-none bg-light text-dark">Sign up</a>
             </div>
             <div class="card text-bg-dark"  style="width: 250px;">
                 <p class="p-4" style="height: 150px;"><span class="text-center">Already have account? Click here to login.</span></p>

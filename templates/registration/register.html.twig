@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Register{% endblock %}
+
+{% block body %}
+    {% for flash_error in app.flashes('verify_email_error') %}
+        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+    {% endfor %}
+
+    <div style="background-image: linear-gradient(to bottom, rgba(55,49,53,0.55), rgba(55,49,53,0.4)), url({{ asset('/build/images/white_book_bg.jpg') }}); background-repeat: no-repeat; background-size: cover; height: 90vh;">
+        <div class="w-50 mx-auto">
+            <h3 class="py-4">Sign up</h3>
+
+            {{ form_start(registrationForm) }}
+                {{ form_widget(registrationForm) }}
+                <button type="submit" class="btn btn-primary my-4">Sign up</button>
+            {{ form_end(registrationForm) }}
+
+            <p>Already have an account? <a href="{{ path('app_login') }}" class="text-dark">Sign in.</a> </p>
+        </div>
+    </div>
+{% endblock %}
