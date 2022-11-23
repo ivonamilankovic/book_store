@@ -39,5 +39,12 @@ class BookController extends \Symfony\Bundle\FrameworkBundle\Controller\Abstract
         return $this->render('/books/all_books.html.twig');
     }
 
+    /**
+     * @Route("/bookList/{id}", name="app_book_list_id")
+     */
+    public function bookListByID():Response
+    {
+        return $this->render('books/all_books.html.twig');
+    }
 
 }
