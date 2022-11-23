@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\RegistrationFormType;
+use App\Repository\UserRepository;
 use App\Security\EmailVerifier;
 use App\Security\LoginAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
@@ -55,12 +56,7 @@ class RegistrationController extends AbstractController
             );
 
             $this->addFlash('success', 'We sent you email to verify your account.');
-
-            return $userAuthenticator->authenticateUser(
-                $user,
-                $authenticator,
-                $request
-            );
+            return $this->redirectToRoute('app_home');
         }
 
         return $this->render('registration/register.html.twig', [
@@ -71,18 +67,42 @@ class RegistrationController extends AbstractController
     /**
      * @Route("/verify/email", name="app_verify_email")
      */
-    public function verifyUserEmail(Request $request, TranslatorInterface $translator): Response
+    public function verifyUserEmail(Request $request, TranslatorInterface $translator, UserRepository $userRepository): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-
         try {
-            $this->emailVerifier->handleEmailConfirmation($request, $this->getUser());
+            $this->emailVerifier->handleEmailConfirmation($request, $userRepository);
         } catch (VerifyEmailExceptionInterface $exception) {
             $this->addFlash('verify_email_error', $translator->trans($exception->getReason(), [], 'VerifyEmailBundle'));
             return $this->redirectToRoute('app_register');
         }
 
         $this->addFlash('success', 'Your email address has been verified.');
-        return $this->redirectToRoute('app_home');
+        return $this->redirectToRoute('app_login');
+    }
+
+    /**
+     * @Route("/verify/resend", name="app_verify_resend_email")
+     */
+    public function verifyResend(): Response
+    {
+        return $this->render('registration/resendVerification.html.twig');
+    }
+
+    /**
+     * @Route("/verify/send_new_email/{id}", name="app_verify_send_new_email")
+     */
+    public function verifySendNewEmail(int $id, UserRepository $userRepository)
+    {
+        $user = $userRepository->findOneBy(['id'=>$id]);
+        $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
+            (new TemplatedEmail())
+                ->from(new Address('info@mybooks.com', 'MyBooks Agent'))
+                ->to($user->getEmail())
+                ->subject('Please Confirm your Email')
+                ->htmlTemplate('registration/confirmation_email.html.twig')
+        );
+
+        $this->addFlash('success', 'Please verify your account before logging in! We sent you verification email.');
+        return $this->redirectToRoute('app_login');
     }
 }
